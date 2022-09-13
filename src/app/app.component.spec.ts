@@ -1,35 +1,25 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
+import { HttpServiceUrl } from './services/http.service';
+import {  TestBed } from '@angular/core/testing';
 
-describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+describe('Service Test', () => {
+  let service: HttpServiceUrl
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [HttpServiceUrl, HttpClient, HttpHandler] });
+    service = TestBed.inject(HttpServiceUrl);
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+  it("countWords(text: string) => [{word: string, occurences: number}]",() => {
+    const sample = "Our mission is to be a leader in the distribution and merchandising of food, pharmacy, health and personal care items, seasonal merchandise, and related products and services. We place considerable importance on forging strong supplier partnerships. Our suppliers, large or small, local or global, are essential components in accomplishing our mission.";
+    service.input = sample;
+    service.getTopText()
+    service.result.forEach((val: any) =>{
+      expect(val).toEqual(jasmine.objectContaining({
+        word: val.word,
+        occurences: val.occurences
+      }));
+    })
+  })
 
-  it(`should have as title 'angular-test'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-test');
-  });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('angular-test app is running!');
-  });
 });

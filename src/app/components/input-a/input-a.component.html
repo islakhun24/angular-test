@@ -1,0 +1,17 @@
+<div class="form-group mt-3">
+  <label for="input1">{{ label }}</label>
+  <input
+    type="text"
+    [(ngModel)]="value"
+    (blur)="onInputBlur()"
+    class="form-control mt-2"
+    id="input1"
+    aria-describedby="input1"
+    placeholder="Enter input 1"
+  />
+  <small class="text-danger mt-2">
+    <ng-container
+    [ngTemplateOutlet]="error"
+></ng-container>
+  </small>
+</div>
